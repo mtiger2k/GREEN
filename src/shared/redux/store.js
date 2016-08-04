@@ -1,9 +1,11 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import { routerMiddleware } from 'react-router-redux';
 import createSagaMiddleware from 'redux-saga';
+import reduxThunkMiddleware from 'redux-thunk';
 import createLogger from 'redux-logger';
+import { setupReducers, replaceReducers } from '@sketchpixy/rubix/lib/node/redux-router';
 
-import { createReducers } from './reducers';
+import createReducers from './reducers';
 
 const loggerMiddleware = createLogger({
   level: 'info',
@@ -15,7 +17,7 @@ export default (history, client, initialState) => {
   const reduxRouterMiddleware = routerMiddleware(history);
   const sagaMiddleware = createSagaMiddleware();
 
-  let middleware = [ sagaMiddleware, reduxRouterMiddleware, client.middleware() ];
+  let middleware = [ reduxThunkMiddleware, sagaMiddleware, client.middleware(), reduxRouterMiddleware ];
 
   let finalCreateStore;
   if (__DEVELOPMENT__ && __CLIENT__ && __DEVTOOLS__) {
@@ -33,11 +35,12 @@ export default (history, client, initialState) => {
     finalCreateStore = applyMiddleware(...middleware)(createStore);
   }
 
-  const store = finalCreateStore(createReducers(client), initialState);
+  const reducers = createReducers(client);
+  const store = finalCreateStore(reducers, initialState);
 
   if (__DEVELOPMENT__ && module.hot) {
     module.hot.accept('./reducers', () => {
-      store.replaceReducer(createReducers(client));
+      replaceReducers(require('./reducers')(client));
     });
   }
 

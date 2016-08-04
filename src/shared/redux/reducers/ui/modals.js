@@ -5,7 +5,7 @@ export const initialState = {
   shouldShowSignup: false
 };
 
-export default function reducer(state = initialState, action = {}) {
+export default (state = initialState, action = {}) => {
   switch (action.type) {
     case types.OPEN_SIGNUP_MODAL:
       return {
@@ -26,4 +26,4 @@ export default function reducer(state = initialState, action = {}) {
     default:
       return state;
   }
-}
+};

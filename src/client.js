@@ -13,7 +13,7 @@ import withScroll from 'scroll-behavior';
 
 import createStore from './shared/redux/store';
 import rootSaga from './shared/redux/sagas';
-import getRoutes from './shared/routes';
+import routes from './shared/routes';
 import ApolloClient from './shared/utils/ApolloClient';
 
 const dest = document.getElementById('content');
@@ -22,7 +22,6 @@ const client = ApolloClient();
 const browserHistory = withScroll(routerHistory);
 const store = createStore(browserHistory, client, window.__data);
 const history = syncHistoryWithStore(browserHistory, store);
-const routes = getRoutes(store);
 
 store.runSaga(rootSaga);
 

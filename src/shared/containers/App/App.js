@@ -1,37 +1,31 @@
 import React, { Component, PropTypes } from 'react';
-import { StyleSheet, css } from 'aphrodite';
-import { Menu, Item, Icon, Container, Card, Label } from 'react-semantify';
-import { Header } from '../';
+import { Grid, Row, Col, MainContainer } from '@sketchpixy/rubix';
 
-const FiraSansFont = {
-  fontFamily: 'FiraSans',
-  fontStyle: 'normal',
-  fontWeight: 'normal',
-  src: 'url("fonts/FiraSans-Regular.ttf") format("ttf")'
-};
+import Header from '../Header/Rubix-Header';
+import Sidebar from '../Sidebar/Sidebar';
+import Footer from '../Footer/Footer';
 
-const styles = StyleSheet.create({
-  app: {
-    fontFamily: FiraSansFont
-  },
-  content: {
-    paddingTop: '40px'
-  }
-});
-
-export default class App extends Component {
-  static propTypes = {
+const App = (props) => {
+  App.propTypes = {
     children: PropTypes.element.isRequired
   };
 
-  render() {
-    return (
-      <div className={css(styles.app)}>
-        <Header />
-        <div className={css(styles.content)}>
-          {this.props.children}
-        </div>
+  return (
+    <MainContainer {...props}>
+      <Sidebar />
+      <Header />
+      <div id="body">
+        <Grid>
+          <Row>
+            <Col xs={12}>
+              {props.children}
+            </Col>
+          </Row>
+        </Grid>
       </div>
-    );
-  }
-}
+      <Footer />
+    </MainContainer>
+  );
+};
+
+export default App;

@@ -7,7 +7,7 @@ export const initialState = {
   error: undefined
 };
 
-export default function reducer(state = initialState, action = {}) {
+export default (state = initialState, action = {}) => {
   switch (action.type) {
     case types.CLEAR_AUTH_ERRORS:
       return {
@@ -84,4 +84,4 @@ export default function reducer(state = initialState, action = {}) {
     default:
       return state;
   }
-}
+};

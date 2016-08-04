@@ -9,16 +9,17 @@ import PrettyError from 'pretty-error';
 import { renderToStaticMarkup, renderToString } from 'react-dom-stream/server';
 import { createMemoryHistory, match, RouterContext, browserHistory } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
-import { host, port, apiHost, apiPort } from './config';
 
+import { host, port, apiHost, apiPort } from './config';
 import { Html } from './shared/containers';
-import getRoutes from './shared/routes';
+import routes from './shared/routes';
 import createStore from './shared/redux/store';
 import rootSaga from './shared/redux/sagas';
 import ApolloClient from './shared/utils/ApolloClient';
 
-const client = ApolloClient();
 const targetUrl = `http://${apiHost}:${apiPort}`;
+
+const client = ApolloClient();
 const pretty = new PrettyError();
 const app = new Express();
 const server = new http.Server(app);
@@ -68,7 +69,6 @@ app.use((req, res) => {
   const memoryHistory = createMemoryHistory(req.originalUrl);
   const store = createStore(memoryHistory, client);
   const history = syncHistoryWithStore(memoryHistory, store);
-  const routes = getRoutes(store);
 
   function hydrateOnClient() {
     renderToString(<Html assets={webpackIsomorphicTools.assets()} client={client}
